@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>チェックイン</title>
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+</head>
+<body>
+  <h2>LINEチェックイン</h2>
+  <button onclick="checkIn()">チェックインする</button>
+
+  <script>
+    const liffId = "2007233791-V01KNpJG";
+    const gasEndpoint = "https://script.google.com/macros/s/AKfycbwma20AGU-iEPhfBw8OBN8epn3_T37Xc9XxCHK_iiHVT14wjzhGcKpdcm7UdLudLPSu/exec";
+
+    async function checkIn() {
+      try {
+        await liff.init({ liffId });
+        if (!liff.isLoggedIn()) {
+          liff.login();
+          return;
+        }
+
+        const profile = await liff.getProfile();
+        const res = await fetch(gasEndpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: profile.userId })
+        });
+
+        const text = await res.text();
+        alert("チェックイン完了しました！\n" + text);
+      } catch (err) {
+        console.error(err);
+        alert("エラーが発生しました");
+      }
+    }
+  </script>
+</body>
+</html>

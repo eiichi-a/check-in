@@ -15,7 +15,12 @@
 
     async function checkIn() {
       try {
-        await liff.init({ liffId });
+        await liff.init({ liffId,
+  withLoginOnExternalBrowser: true
+});
+  
+                        
+                        });
         if (!liff.isLoggedIn()) {
           liff.login();
           return;
